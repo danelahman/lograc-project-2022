@@ -11,7 +11,8 @@ Alphabet : Set
 Alphabet = ℕ
 
 String : Set
-String = {Σ : Alphabet} → List(Fin Σ)
+String = {Σ : Alphabet} → List (Fin Σ)
+
 
 --set of all strings
 _⋆ : Alphabet → Set
@@ -26,8 +27,14 @@ data RegExpr : Set where
 
 
 data _↠_ : String → RegExpr → Set where -- rr-
-  empty : [] ↠ ε
-  -- char : {c : Alphabet} → ([ c ⋆ ]) ↠ (c ^)
+  to-ε : [] ↠ ε -- empty string to empty regexp
+  char-to-^ : {Σ : Alphabet} {c : Fin Σ} → [ {!    !} ] ↠ ({!   !} ^)
+  to-∪-l : {s : String} {exp₁ exp₂ : RegExpr} → s ↠ exp₁ → s ↠ (exp₁ ∪ exp₂) -- if s in exp₁ then s in (exp₁ ∪ exp₂)
+  to-∪-r : {s : String} {exp₁ exp₂ : RegExpr} → s ↠ exp₂ → s ↠ (exp₁ ∪ exp₂) -- if s in exp₁ then s in (exp₁ ∪ exp₂)
+  to-● : {s₁ s₂ : String} {exp₁ exp₂ : RegExpr} → s₁ ↠ exp₁ → s₂ ↠ exp₂ → (s₁ ++ s₂) ↠ (exp₁ ● exp₂)
+  []-to-✹ : {exp : RegExpr} → [] ↠ (exp ✹) -- empty string is always in kleen star
+  to-✹ : {s₁ s₂ : String} {exp : RegExpr} → s₁ ↠ exp → s₂ ↠ (exp ✹) → (s₁ ++ s₂) ↠ (exp ✹) -- In kleen star ✹ we have at least empty string ε. If we concat some string a with ε we get a in ✹, so we can get aa, aaa, ...
+  
 
 
 {-
@@ -54,3 +61,4 @@ data String (l : Σ n) : Set where
     string : {n : ℕ} → List Σ n
     string sequence = ?
 -}
+  

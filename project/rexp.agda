@@ -1,4 +1,4 @@
-module proj where 
+module rexp where 
 
 
 open import Data.Fin renaming (zero to zero'; suc to suc'; _+_ to _+'_)

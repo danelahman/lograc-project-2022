@@ -1,11 +1,10 @@
 open import Data.List
 open import Data.Bool
-open import Relation.Binary.PropositionalEquality hiding ([_])
 open import Relation.Binary
 
 import Automaton
 
-module EmptySet (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
+module EmptySet (Symbol : Set) where
 
   open Automaton Symbol
   open NFA

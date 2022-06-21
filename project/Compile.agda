@@ -11,6 +11,9 @@ open import Relation.Nullary
 import RegExp
 import Automaton
 import 1-Symbol
+import EmptySet
+import EmptySymbol
+import Sequence
 
 module Compile (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
 
@@ -18,9 +21,9 @@ module Compile (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
   open Automaton Symbol
 
   compile : RegExpr → NFA
-  compile ⊘ = {!!}
-  compile ε = {!!}
+  compile ⊘ = EmptySet.emptySet Symbol
+  compile ε = EmptySymbol.emptySymbol Symbol
   compile (a ^) = 1-Symbol.1-symbol Symbol eq a
-  compile (r₁ ⊕ r₂) = {!!}
+  compile (r₁ ⊕ r₂) = Sequence.sequence Symbol (compile r₁) (compile r₂)
   compile (r₁ ∙ r₂) = {!!}
   compile (r *) = {!!}

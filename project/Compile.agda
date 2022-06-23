@@ -14,6 +14,7 @@ import 1-Symbol
 import EmptySet
 import EmptySymbol
 import Sequence
+import Parallel
 
 module Compile (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
 
@@ -24,6 +25,6 @@ module Compile (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
   compile ⊘ = EmptySet.emptySet Symbol
   compile ε = EmptySymbol.emptySymbol Symbol
   compile (a ^) = 1-Symbol.1-symbol Symbol eq a
-  compile (r₁ ⊕ r₂) = Sequence.sequence Symbol (compile r₁) (compile r₂)
-  compile (r₁ ∙ r₂) = {!!}
+  compile (r₁ ⊕ r₂) = Parallel.parallel Symbol (compile r₁) (compile r₂)
+  compile (r₁ ∙ r₂) = Sequence.sequence Symbol (compile r₁) (compile r₂)
   compile (r *) = {!!}

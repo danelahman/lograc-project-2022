@@ -1,5 +1,3 @@
-{-# OPTIONS --allow-unsolved-metas #-}
-
 open import Data.Empty
 open import Data.Unit
 open import Data.List
@@ -15,6 +13,7 @@ import EmptySet
 import EmptySymbol
 import Sequence
 import Parallel
+import Repeat
 
 module Compile (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
 
@@ -27,4 +26,4 @@ module Compile (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
   compile (a ^) = 1-Symbol.1-symbol Symbol eq a
   compile (r₁ ⊕ r₂) = Parallel.parallel Symbol (compile r₁) (compile r₂)
   compile (r₁ ∙ r₂) = Sequence.sequence Symbol (compile r₁) (compile r₂)
-  compile (r *) = {!!}
+  compile (r *) = Repeat.repeat Symbol (compile r)

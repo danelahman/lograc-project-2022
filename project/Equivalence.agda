@@ -6,6 +6,9 @@ open import Data.Bool
 open import Relation.Binary.PropositionalEquality renaming ([_] to [_]')
 open import Relation.Binary
 open import Relation.Nullary
+open import Data.List.Relation.Unary.Any
+import 1-Symbol
+
 import RegExp
 import Automaton
 import Compile
@@ -15,13 +18,15 @@ module Equivalence (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
   open RegExp Symbol
   open Automaton Symbol
   open Compile Symbol eq
+  open 1-Symbol Symbol eq
   open NFA
 
   regexp-nfa : ∀ {r : RegExpr} {w : List Symbol} → Match r w → Accept (compile r) [ start (compile r) ] w
   regexp-nfa match-ε = {!!}
 
   regexp-nfa (match-^ {a}) with eq a a | inspect (eq a) a
-  ... | yes p | [ ξ ]' = accept-∷ (accept-[] {!ξ!} {!!})
+  ... | yes p | [ ξ ]' = accept-∷ (subst (λ b → Accept (1-symbol a) ((if does b then state-accept ∷ [] else state-reject ∷ []) ++ []) []) (sym ξ)
+                          (accept-[] (here refl) tt))
   ... | no q | foo =  ⊥-elim (q refl)
 
   regexp-nfa (match-⊕-l p) = {!!}

@@ -12,18 +12,26 @@ import 1-Symbol
 import RegExp
 import Automaton
 import Compile
+import EmptySymbol
 
 module Equivalence (Symbol : Set) (eq : Decidable {A = Symbol} _≡_) where
 
   open RegExp Symbol
   open Automaton Symbol
   open Compile Symbol eq
+<<<<<<< HEAD
   open 1-Symbol Symbol eq
   open NFA
+=======
+  open NFA 
+  open EmptySymbol
+>>>>>>> stuck
 
   regexp-nfa : ∀ {r : RegExpr} {w : List Symbol} → Match r w → Accept (compile r) [ start (compile r) ] w
-  regexp-nfa match-ε = {!!}
-
+  regexp-nfa match-ε with start (compile ε)
+  ...  | state-accept  = accept-[] {! !} {!  !}
+  ...  | state-reject = ⊥-elim {! !}
+  
   regexp-nfa (match-^ {a}) with eq a a | inspect (eq a) a
   ... | yes p | [ ξ ]' = accept-∷ (subst (λ b → Accept (1-symbol a) ((if does b then state-accept ∷ [] else state-reject ∷ []) ++ []) []) (sym ξ)
                           (accept-[] (here refl) tt))
